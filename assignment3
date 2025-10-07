@@ -1,0 +1,161 @@
+/*Assignment #3
+Date of Submission: 
+Using C++ Programming do the following:
+Create a class called Patient with following :
+Data Members: (Use appropriate data types)
+a)	patientId
+b)	patientName
+c)	bedType 
+d)	noOfDays
+Member functions:
+a)	Accessor Methods
+b)	getBillAmount() returns double
+amount = noOfDays * gerPricePerDay()
+Where, getPricePerDay() returns price as follows:
+If bedType is 1 then price = 500
+If bedType is 2 then price = 350
+If bedType is 3 then price = 200
+Derive a class called InHousePatient (for Hospital Employees) from above Patient class with following:
+Data Members:
+a)	discount
+Member functions:
+a)	Accessor Methods
+b)	getBillAmount()
+Where getBillAmount will be overridden to add discount from the data member only if the billing amount exceeds 5000 else the discount will be 5%.
+Create a test program for above classes and implement following utility functions.
+a)	getTotalBillAmount()
+This returns the total billing amount of all the patients.
+b)	getDiscountedBillAmount()
+This returns the total billing amount of InHousePatients only.
+
+Note: Program should be according to convention followed in class codes. */
+
+
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Patient {
+protected:
+    int patientId;
+    string patientName;
+    int bedType;
+    int noOfDays;
+
+public:
+    // Constructor
+    Patient(int id = 0, string name = "", int bed = 1, int days = 0)
+        : patientId(id), patientName(name), bedType(bed), noOfDays(days) {}
+
+    // Accessor methods (getters and setters)
+    int getPatientId() const { return patientId; }
+    void setPatientId(int id) { patientId = id; }
+
+    string getPatientName() const { return patientName; }
+    void setPatientName(const string& name) { patientName = name; }
+
+    int getBedType() const { return bedType; }
+    void setBedType(int bed) { bedType = bed; }
+
+    int getNoOfDays() const { return noOfDays; }
+    void setNoOfDays(int days) { noOfDays = days; }
+
+    // Returns price per day based on bed type
+    double getPricePerDay() const {
+        switch (bedType) {
+            case 1: return 500.0;
+            case 2: return 350.0;
+            case 3: return 200.0;
+            default: return 0.0;
+        }
+    }
+
+    // Returns total bill amount
+    virtual double getBillAmount() const {
+        return noOfDays * getPricePerDay();
+    }
+
+    // Virtual destructor for proper cleanup
+    virtual ~Patient() {}
+};
+
+class InHousePatient : public Patient {
+private:
+    double discount;  // Discount amount or percentage
+
+public:
+    // Constructor
+    InHousePatient(int id = 0, string name = "", int bed = 1, int days = 0, double disc = 0.0)
+        : Patient(id, name, bed, days), discount(disc) {}
+
+    // Accessor methods for discount
+    double getDiscount() const { return discount; }
+    void setDiscount(double disc) { discount = disc; }
+
+    // Override getBillAmount
+    double getBillAmount() const override {
+        double baseAmount = noOfDays * getPricePerDay();
+        if (baseAmount > 5000) {
+            return baseAmount - discount;
+        } else {
+            // Apply 5% discount if baseAmount <= 5000
+            return baseAmount * 0.95;
+        }
+    }
+};
+
+// Utility function to get total bill amount of all patients
+double getTotalBillAmount(const vector<Patient*>& patients) {
+    double total = 0.0;
+    for (const auto& p : patients) {
+        total += p->getBillAmount();
+    }
+    return total;
+}
+
+// Utility function to get total bill amount of InHousePatients only
+double getDiscountedBillAmount(const vector<Patient*>& patients) {
+    double total = 0.0;
+    for (const auto& p : patients) {
+        // Use dynamic_cast to check if patient is InHousePatient
+        const InHousePatient* inHouse = dynamic_cast<const InHousePatient*>(p);
+        if (inHouse) {
+            total += inHouse->getBillAmount();
+        }
+    }
+    return total;
+}
+
+int main() {
+    vector<Patient*> patients;
+
+    // Adding some Patient objects
+    patients.push_back(new Patient(1, "John Doe", 1, 10));   // BedType 1, 10 days
+    patients.push_back(new Patient(2, "Jane Smith", 2, 5));  // BedType 2, 5 days
+
+    // Adding some InHousePatient objects
+    patients.push_back(new InHousePatient(3, "Alice Brown", 1, 12, 700));  // discount = 700
+    patients.push_back(new InHousePatient(4, "Bob White", 3, 20, 400));    // discount = 400
+
+    // Display individual bill amounts
+    for (const auto& p : patients) {
+        cout << "Patient ID: " << p->getPatientId()
+             << ", Name: " << p->getPatientName()
+             << ", Bill Amount: " << p->getBillAmount() << endl;
+    }
+
+    cout << "Total Bill Amount (All Patients): " << getTotalBillAmount(patients) << endl;
+    cout << "Total Bill Amount (InHousePatients): " << getDiscountedBillAmount(patients) << endl;
+
+    // Clean up dynamically allocated memory
+    for (auto p : patients) {
+        delete p;
+    }
+    patients.clear();
+
+    return 0;
+}
