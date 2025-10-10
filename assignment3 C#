@@ -1,0 +1,118 @@
+✅ Patient.cs
+// Patient.cs
+using System;
+
+public class Patient
+{
+    // Data Members
+    public int PatientId { get; set; }
+    public string PatientName { get; set; }
+    public bool BedType { get; set; }  // true = Special, false = General
+    public int NoOfDays { get; set; }
+
+    // Constructor
+    public Patient(int patientId, string patientName, bool bedType, int noOfDays)
+    {
+        PatientId = patientId;
+        PatientName = patientName;
+        BedType = bedType;
+        NoOfDays = noOfDays;
+    }
+
+    // Accessor Method
+    public virtual double GetBillAmount()
+    {
+        return NoOfDays * GetPricePerDay();
+    }
+
+    protected double GetPricePerDay()
+    {
+        return BedType ? 500 : 200;
+    }
+}
+
+✅ InHousePatient.cs
+// InHousePatient.cs
+using System;
+
+public class InHousePatient : Patient
+{
+    public double Discount { get; set; }
+
+    // Constructor
+    public InHousePatient(int patientId, string patientName, bool bedType, int noOfDays, double discount)
+        : base(patientId, patientName, bedType, noOfDays)
+    {
+        Discount = discount;
+    }
+
+    // Overridden GetBillAmount method
+    public override double GetBillAmount()
+    {
+        double baseAmount = base.GetBillAmount();
+        double finalAmount;
+
+        if (baseAmount > 5000)
+        {
+            finalAmount = baseAmount - Discount;
+        }
+        else
+        {
+            finalAmount = baseAmount * 0.95; // Apply 5% discount
+        }
+
+        return finalAmount;
+    }
+}
+
+✅ Program.cs
+// Program.cs
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        List<Patient> patients = new List<Patient>
+        {
+            new Patient(1, "John Doe", true, 5),               // Special Bed
+            new InHousePatient(2, "Jane Smith", false, 10, 700), // General Bed
+            new Patient(3, "Alice Johnson", false, 3),         // General Bed
+            new InHousePatient(4, "Bob Brown", true, 12, 800)  // Special Bed
+        };
+
+        double totalBill = GetTotalBillAmount(patients);
+        double discountedBill = GetDiscountedBillAmount(patients);
+
+        Console.WriteLine($"Total Bill Amount (All Patients): {totalBill:C}");
+        Console.WriteLine($"Total Discounted Bill Amount (InHouse Patients Only): {discountedBill:C}");
+    }
+
+    static double GetTotalBillAmount(List<Patient> patients)
+    {
+        double total = 0;
+        foreach (var p in patients)
+        {
+            total += p.GetBillAmount();
+        }
+        return total;
+    }
+
+    static double GetDiscountedBillAmount(List<Patient> patients)
+    {
+        double total = 0;
+        foreach (var p in patients)
+        {
+            if (p is InHousePatient)
+            {
+                total += p.GetBillAmount();
+            }
+        }
+        return total;
+    }
+}
+
+✅ Output Example
+Total Bill Amount (All Patients): $11,425.00
+Total Discounted Bill Amount (InHouse Patients Only): $8,875.00
