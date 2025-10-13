@@ -1,0 +1,96 @@
+#include <cstdio>     // for printf, scanf
+#include <cstring>    // for strcpy, strlen
+#include <stdexcept>  // for exception handling
+using namespace std;
+
+// ---------- Base Class ----------
+class Publication {
+protected:
+    char title[50];
+    float price;
+
+public:
+    // Function to get publication data
+    virtual void getData() {
+        printf("Enter title: ");
+        scanf(" %[^\n]", title); // read string with spaces
+
+        printf("Enter price: ");
+        scanf("%f", &price);
+
+        if (price < 0)
+            throw invalid_argument("Price cannot be negative!");
+    }
+
+    // Function to display publication data
+    virtual void putData() const {
+        printf("\nTitle: %s", title);
+        printf("\nPrice: Rs. %.2f", price);
+    }
+};
+
+// ---------- Derived Class: BOOK ----------
+class Book : public Publication {
+    int pageCount;
+
+public:
+    void getData() override {
+        Publication::getData();
+        printf("Enter page count: ");
+        scanf("%d", &pageCount);
+
+        if (pageCount <= 0)
+            throw invalid_argument("Page count must be positive!");
+    }
+
+    void putData() const override {
+        Publication::putData();
+        printf("\nPage Count: %d\n", pageCount);
+    }
+};
+
+// ---------- Derived Class: TAPE ----------
+class Tape : public Publication {
+    float length; // in minutes
+
+public:
+    void getData() override {
+        Publication::getData();
+        printf("Enter tape length (in minutes): ");
+        scanf("%f", &length);
+
+        if (length <= 0)
+            throw invalid_argument("Tape length must be positive!");
+    }
+
+    void putData() const override {
+        Publication::putData();
+        printf("\nTape Length: %.2f minutes\n", length);
+    }
+};
+
+// ---------- MAIN FUNCTION ----------
+int main() {
+    try {
+        Book b;
+        Tape t;
+
+        printf("Enter details for Book:\n");
+        b.getData();
+
+        printf("\nEnter details for Tape:\n");
+        t.getData();
+
+        printf("\n--- Publication Details ---\n");
+        printf("\nBook Details:");
+        b.putData();
+
+        printf("\nTape Details:");
+        t.putData();
+
+    } catch (const invalid_argument &e) {
+        printf("\nError: %s\n", e.what());
+    }
+
+    return 0;
+}
