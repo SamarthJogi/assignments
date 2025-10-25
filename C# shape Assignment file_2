@@ -1,0 +1,23 @@
+using System;
+using Geometry; // Use the class library
+
+namespace DemoApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create objects
+            Circle c = new Circle(5);
+            Square s = new Square(4);
+            Rectangle r = new Rectangle(6, 3);
+
+            // Print areas
+            Console.WriteLine("Circle Area: " + c.Area());
+            Console.WriteLine("Square Area: " + s.Area());
+            Console.WriteLine("Rectangle Area: " + r.Area());
+
+            Console.ReadLine();
+        }
+    }
+}
