@@ -1,0 +1,14 @@
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/Ass1.GeneratedMSBuildEditorConfig.editorconfig
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/Ass1.AssemblyInfoInputs.cache
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/Ass1.AssemblyInfo.cs
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/Ass1.csproj.CoreCompileInputs.cache
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/bin/Debug/net9.0/Ass1
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/bin/Debug/net9.0/Ass1.deps.json
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/bin/Debug/net9.0/Ass1.runtimeconfig.json
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/bin/Debug/net9.0/Ass1.dll
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/bin/Debug/net9.0/Ass1.pdb
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/Ass1.dll
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/refint/Ass1.dll
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/Ass1.pdb
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/Ass1.genruntimeconfig.cache
+/home/cdac/Rushi/DotNet/DemoApp/Ass1/obj/Debug/net9.0/ref/Ass1.dll
